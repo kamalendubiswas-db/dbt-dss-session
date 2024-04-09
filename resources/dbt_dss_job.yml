@@ -8,8 +8,24 @@ resources:
             project_directory: ${workspace.file_path}/
             commands:
               - dbt deps #If you have private packages this can be run before bundle deploy
-              - "dbt build --exclude tag:stream --vars 'schema_prefix: ${var.schema_prefix}'" # Remove exclude if you want to run with streaming tables
-            warehouse_id: ${var.warehouse_id} 
+              - "dbt build --exclude tag:stream --target-path /Volumes/${var.dbt_catalog}/bronze/dbt_artefacts/runs/{{job.id}}/{{job.run_id}} --vars 'schema_prefix: ${var.schema_prefix}'" # Remove exclude if you want to run with streaming tables
+            warehouse_id: ${var.warehouse_id}
+            catalog: ${var.dbt_catalog}
+            source: WORKSPACE
+          job_cluster_key: dbt_CLI
+          libraries:
+            - pypi:
+                package: dbt-databricks>=1.0.0,<2.0.0
+        - task_key: dbt_retry
+          depends_on:
+            - task_key: dbt_dss_job
+          run_if: ALL_FAILED
+          dbt_task:
+            project_directory: ${workspace.file_path}/
+            commands:
+              - dbt deps
+              - dbt retry --state /Volumes/${var.dbt_catalog}/bronze/dbt_artefacts/runs/{{job.id}}/{{job.run_id}}
+            warehouse_id: ${var.warehouse_id}
             catalog: ${var.dbt_catalog}
             source: WORKSPACE
           job_cluster_key: dbt_CLI
