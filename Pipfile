@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-dbt-databricks = "1.7.3"
+dbt-databricks = "1.7.10"
 databricks-connect = "*"
 databricks-sdk = "*"
 sqlfluff = "*"
