@@ -9,3 +9,4 @@ default:
       threads: 8
       token: '{{ env_var(''DBT_ENV_SECRET_DB_TOKEN'') }}'
       type: databricks
+      
