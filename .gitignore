@@ -173,3 +173,4 @@ elementary_report.html
 dbt.log.legacy
 .databricks
 .vscode
+profiles_bkp.yml

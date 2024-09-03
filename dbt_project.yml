@@ -9,6 +9,7 @@ config-version: 2
 vars:
   # Schema prefix to set
   schema_prefix: "{{ env_var('DBT_SCHEMA_PREFIX', '') }}"
+  input_path: '/Volumes/data_saturday/bronze'
 
 # This setting configures which "profile" dbt uses for this project.
 profile: 'default'
@@ -41,25 +42,15 @@ models:
     # Applies to all files under models/example/
     bronze_layer:
       +schema:  bronze
+      +tags:
+        - bronze_layer
+
     silver_layer:
       +schema:  silver
       +tags:
         - silver_layer
-      +post_hook:
-        - "OPTIMIZE {{ this }}"
-        - "ANALYZE TABLE {{ this }} COMPUTE STATISTICS FOR ALL COLUMNS"
                       
     gold_layer:
       +schema:  gold
       +tags:
         - gold_layer
-  dbt_artifacts:
-   +schema: dbt_artifacts
-
-seeds:
-  dss_dbt_project:
-    +enabled: true
-    +tags:  "seed"
-    +schema:  bronze
-
-on-run-end: "{{ dbt_artifacts.upload_results(results) }}"
