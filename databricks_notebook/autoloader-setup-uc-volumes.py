@@ -73,19 +73,14 @@ print("Airline dataset ready!")
 #Airport codes
 try:
   url = "https://pkgstore.datahub.io/core/airport-codes/airport-codes_json/data/9ca22195b4c64a562a0a8be8d133e700/airport-codes_json.json"
-  from pyspark import SparkFiles
-  sc.addFile(url)
-  path  = SparkFiles.get('airport-codes_json.json')
-  dbutils.fs.cp(f'file://{path}',f'{userhome}/iata_data/airport_codes.json')
+  dbutils.fs.cp(url,f'{userhome}/iata_data/airport_codes.json')
 except Exception as e:
   print(f"Cannot access data at: {url}")
   
 #Airline codes
 try:
   url2 = "https://raw.githubusercontent.com/npow/airline-codes/master/airlines.json"
-  sc.addFile(url2)
-  path  = SparkFiles.get('airlines.json')
-  dbutils.fs.cp(f'file://{path}',f'{userhome}/iata_data/airline_codes.json')
+  dbutils.fs.cp(url2,f'{userhome}/iata_data/airline_codes.json')
 except Exception as e:
   print(f"Cannot access data at: {url2}")
   
