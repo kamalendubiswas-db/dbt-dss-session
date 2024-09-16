@@ -9,7 +9,7 @@ config-version: 2
 vars:
   # Schema prefix to set
   schema_prefix: "{{ env_var('DBT_SCHEMA_PREFIX', '') }}"
-  input_path: '/Volumes/data_saturday/bronze'
+  input_path: '/Volumes/data_saturday/streaming'
 
 # This setting configures which "profile" dbt uses for this project.
 profile: 'default'
@@ -40,17 +40,8 @@ models:
       
   dss_dbt_project:
     # Applies to all files under models/example/
-    bronze_layer:
-      +schema:  bronze
-      +tags:
-        - bronze_layer
+    classic_tables:
+      +schema:  classic
 
-    silver_layer:
-      +schema:  silver
-      +tags:
-        - silver_layer
-                      
-    gold_layer:
-      +schema:  gold
-      +tags:
-        - gold_layer
+    streaming_tables:
+      +schema:  streaming

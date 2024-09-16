@@ -1,8 +1,9 @@
 {{
     config(
-        materialized='materialized_view',
+        materialized='table',
         tblproperties={"delta.enableChangeDataFeed":"true"},
-        zorder="airline_name"
+        zorder="airline_name",
+        tags='classic'
     )
 }}
 
@@ -12,6 +13,6 @@
         ,COUNT(*) AS no_flights
         ,SUM(IF(IsArrDelayed = TRUE,1,0)) AS tot_delayed
         ,ROUND(tot_delayed*100/no_flights,2) AS perc_delayed
-        FROM {{ ref('airline_trips_silver') }}
+        FROM {{ ref('airline_trips_silver_classic') }}
         WHERE airline_name IS NOT NULL
         GROUP BY 1,2

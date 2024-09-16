@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: bronze_layer
+    schema: classic
+    tables:
+      - name: airport_codes_bronze_classic
+      - name: airline_trips_bronze_classic

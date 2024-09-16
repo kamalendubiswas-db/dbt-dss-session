@@ -2,7 +2,8 @@
     config(
         materialized='materialized_view',
         tblproperties={"delta.enableChangeDataFeed":"true"},
-        zorder=['ArrDate','airline_name']
+        zorder=['ArrDate','airline_name'],
+        tags='streaming'
     )
 }}
 

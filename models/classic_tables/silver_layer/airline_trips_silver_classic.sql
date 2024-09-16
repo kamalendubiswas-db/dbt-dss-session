@@ -1,6 +1,7 @@
 {{
     config(
-        materialized='streaming_table'
+        materialized='table',
+        tags='classic'
         )
 }}
 
@@ -14,7 +15,7 @@ origin_airport_codes as (
         ,name as origin_airport_name
         ,elevation_ft::INT origin_elevation_ft
         ,split(coordinates,',') as origin_coordinates_array
-    FROM {{ref("airport_codes")}}
+    FROM {{source("bronze_layer", "airport_codes_bronze_classic")}}
 
 ),
 
@@ -26,22 +27,22 @@ dest_airport_codes as (
         ,name as dest_airport_name
         ,elevation_ft::INT dest_elevation_ft
         ,split(coordinates,',') as dest_coordinates_array
-    FROM {{ref("airport_codes")}}
+    FROM {{source("bronze_layer", "airport_codes_bronze_classic")}}
 
 ),
 
 airline_names as (
 
-    SELECT iata, name as airline_name FROM {{ ref('airline_codes') }}
+    SELECT iata, name as airline_name FROM {{source("bronze_layer", "airport_codes_bronze_classic")}}
 ),
 
-bronze_stream as (
+bronze_raw as (
 
     SELECT 
         *
         ,TO_DATE(STRING(INT(Year*10000+Month*100+DayofMonth)),'yyyyMMdd') AS ArrDate
         ,TO_TIMESTAMP(STRING(BIGINT(Year*100000000+Month*1000000+DayofMonth*10000+ArrTime)),'yyyyMMddHHmm') AS ArrTimestamp
-    FROM STREAM({{ref("airline_trips_bronze")}})
+    FROM ({{source("bronze_layer", "airline_trips_bronze_classic")}})
 ),
 
 final as (
@@ -83,7 +84,7 @@ SELECT
   ,dest_elevation_ft
   ,dest_coordinates_array
   ,file_modification_time
-FROM STREAM(bronze_stream) raw
+FROM bronze_raw raw
 INNER JOIN origin_airport_codes
   ON raw.Origin = origin_airport_codes.iata_code
 INNER JOIN dest_airport_codes
@@ -92,4 +93,4 @@ INNER JOIN airline_names
   ON raw.UniqueCarrier = airline_names.iata
 )
 
-SELECT * FROM STREAM(final)
+SELECT * FROM final

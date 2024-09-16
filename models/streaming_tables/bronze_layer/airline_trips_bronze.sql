@@ -1,6 +1,7 @@
 {{
     config(
-        materialized='streaming_table'
+        materialized='streaming_table',
+        tags='streaming'
     )
 }}
 
