@@ -33,7 +33,7 @@ dest_airport_codes as (
 
 airline_names as (
 
-    SELECT iata, name as airline_name FROM {{source("bronze_layer", "airport_codes_bronze_classic")}}
+    SELECT iata, name as airline_name FROM {{source("bronze_layer", "airline_codes_bronze_classic")}}
 ),
 
 bronze_raw as (
@@ -83,7 +83,6 @@ SELECT
   ,dest_airport_name
   ,dest_elevation_ft
   ,dest_coordinates_array
-  ,file_modification_time
 FROM bronze_raw raw
 INNER JOIN origin_airport_codes
   ON raw.Origin = origin_airport_codes.iata_code

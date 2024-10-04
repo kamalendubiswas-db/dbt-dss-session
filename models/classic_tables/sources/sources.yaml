@@ -2,7 +2,9 @@ version: 2
 
 sources:
   - name: bronze_layer
+    tags: ['classic']
     schema: classic
     tables:
       - name: airport_codes_bronze_classic
       - name: airline_trips_bronze_classic
+      - name: airline_codes_bronze_classic
