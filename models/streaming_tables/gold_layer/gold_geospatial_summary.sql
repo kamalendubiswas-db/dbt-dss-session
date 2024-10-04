@@ -37,8 +37,8 @@ final AS (
         WHEN Percentage_Delayed_Departures BETWEEN 50 AND 70 THEN 'High'
         WHEN Percentage_Delayed_Departures >= 70 THEN 'Severe'
     END AS Delay_Categories
-    FROM geospatial_aggregation
+    FROM STREAM(geospatial_aggregation)
 
 )
 
-SELECT * FROM final
+SELECT * FROM STREAM(final)
