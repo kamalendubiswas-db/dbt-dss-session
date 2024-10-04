@@ -5,12 +5,3 @@ packages:
     
   - package: dbt-labs/spark_utils
     version: 0.3.0
-  
-  - package: calogica/dbt_expectations
-    version: 0.9.0
-  
-  - package: dbt-labs/dbt_external_tables
-    version: 0.8.7
-  
-  - package: brooklyn-data/dbt_artifacts # Uploads information about the DBT project into tables that can be used for status dashboards
-    version: 2.6.2
