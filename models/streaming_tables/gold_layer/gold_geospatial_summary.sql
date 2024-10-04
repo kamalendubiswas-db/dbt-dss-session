@@ -1,6 +1,6 @@
 {{
     config(
-        materialized='materialized_view',
+        materialized='streaming_table',
         tblproperties={"delta.enableChangeDataFeed":"true"},
         zorder=['ArrDate','airline_name'],
         tags='streaming'
